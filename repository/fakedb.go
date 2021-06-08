@@ -94,28 +94,3 @@ var (
 		TeachingLangs: []int{123, 456},
 	}
 )
-
-// "id": "xxx",
-// "slug": "foo-bar",
-// "name": "Amazing Teacher 1",
-// "headline": "Hi I'm a English Teacher",
-// "introduction": ".........",
-// "price_info": {
-//   "trial": 5,
-//   "normal": 10
-// },
-// "teaching_languages": [123,121]
-// }
-
-// "data": {
-//     "id": "xxx",
-//     "slug": "foo-bar",
-//     "name": "Amazing Teacher 1",
-//     "headline": "Hi I'm a English Teacher",
-//     "introduction": ".........",
-//     "price_info": {
-//       "trial": 5,
-//       "normal": 10
-//     },
-//     "teaching_languages": [123,121]
-//   }

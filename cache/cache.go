@@ -18,11 +18,10 @@ var (
 )
 
 const (
-	englishSlug        = "english"
-	chineseSlug        = "chinese"
-	japaneseSlug       = "japanese"
-	englishCachePeriod = 3 * time.Minute
-	// englishCachePeriod   = 3 * time.Millisecond
+	englishSlug          = "english"
+	chineseSlug          = "chinese"
+	japaneseSlug         = "japanese"
+	englishCachePeriod   = 3 * time.Minute
 	chineseCachePeriod   = 5 * time.Minute
 	japaneseCachePeriod  = 10 * time.Minute
 	tutorInfoCachePeriod = 10 * time.Minute
