@@ -83,18 +83,13 @@ func (c *cacheLayer) GetTutors(ctx context.Context, langSlug string) ([]reposito
 			return nil, ErrCacheCorruption
 		}
 
-		cachePeriod := getCachePeriod(langSlug)
-		if entry.updatedAt.Add(cachePeriod).Before(time.Now()) {
+		if entry.updatedAt.Add(getCachePeriod(langSlug)).Before(time.Now()) {
 			// invalid cache, trigger background job to update cache
 			ctx, cancel := context.WithDeadline(ctx, time.Now().Add(defaultAsyncDeadline))
 			go func() {
 				defer cancel()
-				tutors, err := c.db.GetTutors(ctx, langSlug)
-				if err != nil {
-					c.logger.Warn("GetTutors error", zap.Error(err))
-					return
-				}
-				c.updateCache(cacheKey, tutors, time.Now())
+				c.logger.Debug("async update tutors", zap.String("langSlug", langSlug))
+				c.updateCacheAndReturnTutors(ctx, langSlug, cacheKey)
 			}()
 		}
 		c.logger.Info("[Cache hit] return tutors info", zap.String("langSlug", langSlug))
@@ -107,7 +102,7 @@ func (c *cacheLayer) GetTutors(ctx context.Context, langSlug string) ([]reposito
 	defer c.ml.Unlock(cacheKey)
 	c.logger.Debug("[Cache miss] got lock", zap.String("langSlug", langSlug))
 
-	// goroutine gets the lock, check the cache again to prevent cache stampede
+	// once goroutine gets the lock, check the cache again to prevent cache stampede
 	rawdata, found = c.cache.Get(cacheKey)
 	if found {
 		c.logger.Debug("[Cache hit] good! just return the cache value", zap.String("langSlug", langSlug))
@@ -123,9 +118,13 @@ func (c *cacheLayer) GetTutors(ctx context.Context, langSlug string) ([]reposito
 	}
 
 	// responsible to update cache
+	return c.updateCacheAndReturnTutors(ctx, langSlug, cacheKey)
+}
+
+func (c *cacheLayer) updateCacheAndReturnTutors(ctx context.Context, langSlug, cacheKey string) ([]repository.TutorInfo, error) {
 	tutors, err := c.db.GetTutors(ctx, langSlug)
 	if err != nil {
-		c.logger.Warn("GetTutors error", zap.Error(err))
+		c.logger.Warn("GetTutor error", zap.Error(err))
 		return nil, err
 	}
 	c.updateCache(cacheKey, tutors, time.Now())
@@ -151,13 +150,8 @@ func (c *cacheLayer) GetTutor(ctx context.Context, tutorSlug string) (*repositor
 			ctx, cancel := context.WithDeadline(ctx, time.Now().Add(defaultAsyncDeadline))
 			go func() {
 				defer cancel()
-				tutor, err := c.db.GetTutor(ctx, tutorSlug)
-				if err != nil {
-					c.logger.Warn("GetTutor error", zap.Error(err))
-					return
-				}
 				c.logger.Debug("async update GetTutor", zap.String("tutorSlug", tutorSlug))
-				c.updateCache(cacheKey, *tutor, time.Now())
+				c.updateCacheAndReturnTutor(ctx, tutorSlug, cacheKey)
 			}()
 		}
 		c.logger.Info("[Cache hit] return tutor info", zap.String("tutorSlug", tutorSlug))
@@ -170,7 +164,7 @@ func (c *cacheLayer) GetTutor(ctx context.Context, tutorSlug string) (*repositor
 	defer c.ml.Unlock(cacheKey)
 	c.logger.Debug("[Cache miss] got lock", zap.String("tutorSlug", tutorSlug))
 
-	// goroutine gets the lock, check the cache again to prevent cache stampede
+	// once goroutine gets the lock, check the cache again to prevent cache stampede
 	rawdata, found = c.cache.Get(cacheKey)
 	if found {
 		c.logger.Debug("[Cache hit] good! just return the cache value", zap.String("tutorSlug", tutorSlug))
@@ -186,6 +180,10 @@ func (c *cacheLayer) GetTutor(ctx context.Context, tutorSlug string) (*repositor
 	}
 
 	// responsible to update cache
+	return c.updateCacheAndReturnTutor(ctx, tutorSlug, cacheKey)
+}
+
+func (c *cacheLayer) updateCacheAndReturnTutor(ctx context.Context, tutorSlug, cacheKey string) (*repository.TutorInfo, error) {
 	tutor, err := c.db.GetTutor(ctx, tutorSlug)
 	if err != nil {
 		c.logger.Warn("GetTutor error", zap.Error(err))

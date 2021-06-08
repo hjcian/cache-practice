@@ -11,8 +11,6 @@ type Env struct {
 	// DBName         string `envconfig:"DB_NAME"     default:"test"`
 	// DBUser         string `envconfig:"DB_USER"     default:"test"`
 	// DBPassword     string `envconfig:"DB_PASSWORD" default:"test"`
-	// CacheHost      string `envconfig:"CACHE_HOST"  default:"localhost"`
-	// CachePort      int    `envconfig:"CACHE_PORT"  default:"6679"`
 }
 
 func Process() (env Env, err error) {

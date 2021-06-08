@@ -30,7 +30,7 @@ func main() {
 		log.Fatalf("failed to process env: %s", err)
 	}
 
-	db, err = repository.InitFakeDB()
+	db, err = repository.InitFakeDB() // TODO: use an official implementation
 	if err != nil {
 		log.Fatalf("failed to connect db: %s", err)
 	}

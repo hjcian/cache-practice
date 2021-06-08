@@ -1,3 +1,6 @@
+//
+// this implementation is just for testing purposes
+//
 package repository
 
 import (
@@ -11,8 +14,6 @@ func InitFakeDB() (Repository, error) {
 type fakedb struct{}
 
 func (f *fakedb) GetTutors(ctx context.Context, langSlug string) ([]TutorInfo, error) {
-	// need join
-	// use lang
 	switch langSlug {
 	case "english":
 		return []TutorInfo{englishTutor1, englishTutor2}, nil
