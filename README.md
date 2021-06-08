@@ -9,3 +9,6 @@
 - cache layer 重複的部分太多，應進一步抽象化
 - cache layer 等 async job 應該用 retry/timeout 的方式來測，測試結果應該會比直接用 `time.Sleep` 來等還要可預測
 - cache layer 的 async update cache 會有 cache stampede 的問題，需再思考如何實作
+
+## Reference
+- [Multiple Lock Based on Input](https://medium.com/@kf99916/multiple-lock-based-on-input-in-golang-74931a3c8230)
