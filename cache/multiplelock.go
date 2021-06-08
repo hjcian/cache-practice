@@ -1,3 +1,6 @@
+// Reference:
+// https://medium.com/@kf99916/multiple-lock-based-on-input-in-golang-74931a3c8230
+//
 package cache
 
 import (
