@@ -42,7 +42,7 @@ func (t TutorController) Get(c *gin.Context) {
 			c.JSON(http.StatusNotFound, gin.H{"error": "tutors not found"})
 			return
 		}
-		t.Logger.Warn("find tutor error", zap.String("tutorSlug", tutorSlug))
+		t.Logger.Warn("find tutor error", zap.String("tutorSlug", tutorSlug), zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "find tutor error"})
 		return
 	}

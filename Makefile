@@ -11,6 +11,14 @@ GOTEST=$(GOCMD) test -covermode=atomic -coverprofile=./coverage.out -v -timeout=
 .EXPORT_ALL_VARIABLES:
 APP_PORT?=8080
 
+.PHONY: test, see-coverage
+test:
+	@${GOTEST} ./...
+
+see-coverage:
+	@go tool cover -html=coverage.out
+
+
 .PHONY: run
 run:
 	@${GOCMD} run main.go

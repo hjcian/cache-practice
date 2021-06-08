@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cachepractice/cache"
 	"cachepractice/envconfig"
 	"cachepractice/logger"
 	"cachepractice/repository"
@@ -33,6 +34,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to connect db: %s", err)
 	}
-	r := server.NewRouter(db, zaplogger)
+
+	cachedb := cache.InitCacheLayer(db, zaplogger)
+
+	r := server.NewRouter(cachedb, zaplogger)
 	r.Run(fmt.Sprintf(":%d", env.AppPort))
 }
