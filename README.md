@@ -1,5 +1,5 @@
 ## Description
-- 由於比較不熟且重點練習的部分在快取機制，故先使用滿足 interface 的 `fakedb` 實作來滿足服務運行時取得的資料
+- 由於練習重點在快取機制，故先使用滿足 interface 的 `fakedb` 實作來滿足服務運行時取得的資料
 
 ## Test
 `make test`
