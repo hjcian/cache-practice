@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
-const waitToJobDone = time.Second
+const waitToJobDone = 200 * time.Millisecond
 
 type recorder struct {
 	GetTutorCount  int
@@ -55,7 +55,7 @@ func Test_cacheLayer_GetTutors_Cache_Miss_Should_Block(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			cache.GetTutors(context.Background(), "foo")
+			cache.GetTutors(context.Background(), "english")
 		}()
 	}
 	wg.Wait()
