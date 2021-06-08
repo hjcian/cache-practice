@@ -1,0 +1,14 @@
+### LIST
+GET http://localhost:8080/api/tutors/english HTTP/1.1
+
+### LIST
+GET http://localhost:8080/api/tutors/chinese HTTP/1.1
+
+### LIST
+GET http://localhost:8080/api/tutors/japanese HTTP/1.1
+
+### GET
+GET http://localhost:8080/api/tutor/foo-bar HTTP/1.1
+
+### GET
+GET http://localhost:8080/api/tutor/bar-foo HTTP/1.1
